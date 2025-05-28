@@ -581,8 +581,7 @@ class FlxAnimate extends FlxSprite
 
 		if (!FlxG.mouse.pressed)
 		{
-			badPress = false;
-			goodPress = false;
+			badPress = goodPress = false;
 		}
 		if (FlxG.mouse.overlaps(this) && !badPress)
 		{
@@ -604,9 +603,7 @@ class FlxAnimate extends FlxSprite
 			}
 		}
 		else
-		{
 			frame = 0;
-		}
 		#else
 		FlxG.log.error("Button stuff isn't available for mobile!");
 		#end
@@ -614,6 +611,8 @@ class FlxAnimate extends FlxSprite
 	}
 
 	var _mat:FlxMatrix = new FlxMatrix();
+	var _tmpMat:FlxMatrix = new FlxMatrix();
+	var _col:ColorTransform = new ColorTransform();
 
 	function drawLimb(limb:FlxFrame, _matrix:FlxMatrix, ?colorTransform:ColorTransform = null, filterin:Bool = false, ?blendMode:BlendMode,
 			?scrollFactor:FlxPoint = null, cameras:Array<FlxCamera> = null)
