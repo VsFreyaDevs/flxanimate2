@@ -27,14 +27,17 @@ class FlxSymbol implements IFlxDestroyable
 	var _sprites:Array<Sprite> = [];
 
 	public var timeline(default, null):FlxTimeline;
+
 	/**
 	 * The amount of frames the symbol has.
 	 */
 	public var length(get, null):Int;
+
 	/**
 	 * The name of the symbol.
 	 */
 	public var name(default, null):String;
+
 	@:noCompletion
 	@:deprecated("")
 	public var labels(default, null):Map<String, FlxLabel>;
@@ -42,7 +45,7 @@ class FlxSymbol implements IFlxDestroyable
 	/**
 	 * The callback that's called for every `fireCallbacks()`.
 	 */
-	public var onCallback:()->Void;
+	public var onCallback:() -> Void;
 
 	/**
 	 * The amount of layers structured in names.
@@ -71,6 +74,7 @@ class FlxSymbol implements IFlxDestroyable
 
 		activeCount = 0;
 	}
+
 	/**
 	 * Hides a layer from the timeline.
 	 * @param layer The name of the layer.
@@ -79,6 +83,7 @@ class FlxSymbol implements IFlxDestroyable
 	{
 		timeline.hide(layer);
 	}
+
 	/**
 	 * Shows a layer from the timeline.
 	 * @param layer The name of the layer.
@@ -87,6 +92,7 @@ class FlxSymbol implements IFlxDestroyable
 	{
 		timeline.show(layer);
 	}
+
 	/**
 	 * Adds a callback to a specific frame label.
 	 * @param label
@@ -109,6 +115,7 @@ class FlxSymbol implements IFlxDestroyable
 		label.callbacks.push(callback);
 		return true;
 	}
+
 	public function getCallbackFrom(label:String, callback:EitherType<Function, Int>, ?layer:EitherType<Int, String>)
 	{
 		var label = getFrameLabel(name, layer);
@@ -119,6 +126,7 @@ class FlxSymbol implements IFlxDestroyable
 		var c:Function = label.callbacks[(callback is Int) ? callback : label.callbacks.indexOf(callback)];
 		return c;
 	}
+
 	/**
 	 * Removes a callback from a certain label. can be extracted from a certain layer.
 	 * @param label The label in question.
@@ -140,6 +148,7 @@ class FlxSymbol implements IFlxDestroyable
 		label.callbacks.remove(callback);
 		return true;
 	}
+
 	public function removeAllCallbacksFrom(label:String, ?layer:EitherType<Int, String> = null)
 	{
 		var label = getFrameLabel(label, layer);
@@ -150,30 +159,34 @@ class FlxSymbol implements IFlxDestroyable
 		label.removeCallbacks();
 		return true;
 	}
+
 	public function destroy()
 	{
 		name = "";
 
 		timeline.destroy();
 	}
-	public function getNextToFrameLabel(label:String, ?layer:EitherType<Int, String> = null)
-	@:privateAccess {
-		if (layer == null) layer = 0;
+
+	public function getNextToFrameLabel(label:String, ?layer:EitherType<Int, String> = null) @:privateAccess {
+		if (layer == null)
+			layer = 0;
 		var label = getFrameLabel(label, layer);
-		if (label == null) return null;
+		if (label == null)
+			return null;
 
 		var layer = timeline.get(layer);
 		var j = layer._keyframes.indexOf(label);
 		while (j++ < layer._keyframes.length)
 		{
 			var name = layer._keyframes[j].name;
-			//if ([null, label.name].indexOf(layer._keyframes[j].name) == -1)
+			// if ([null, label.name].indexOf(layer._keyframes[j].name) == -1)
 			if (name != null && name != label.name)
 				return layer._keyframes[j];
 		}
 
 		return null;
 	}
+
 	public function getFrameLabel(name:String, ?layer:EitherType<Int, String> = null)
 	{
 		var frame:FlxKeyFrame = null;
@@ -181,7 +194,8 @@ class FlxSymbol implements IFlxDestroyable
 
 		for (layer in layers)
 		{
-			if (layer == null) continue;
+			if (layer == null)
+				continue;
 
 			var fr = layer.get(name);
 			if (fr != null)
@@ -203,6 +217,7 @@ class FlxSymbol implements IFlxDestroyable
 	{
 		timeline.updateRender(elapsed, curFrame, dictionary, swfRender);
 	}
+
 	/**
 	 * Gets an element through a specific index from a frame.
 	 * @param index The element index.
@@ -217,7 +232,8 @@ class FlxSymbol implements IFlxDestroyable
 		{
 			var keyframe = layer.get(frame);
 
-			if (keyframe == null) continue;
+			if (keyframe == null)
+				continue;
 
 			var elements = keyframe.getList();
 
@@ -234,6 +250,7 @@ class FlxSymbol implements IFlxDestroyable
 		}
 		return null;
 	}
+
 	/**
 	 * Gets a list of frames that have a label of any kind.
 	 * @param layer A specific layer to get the list. if set to `null`, it'll get a list from every layer.
@@ -269,6 +286,7 @@ class FlxSymbol implements IFlxDestroyable
 
 		return array;
 	}
+
 	public function getFrameLabelNames(?layer:EitherType<Int, String> = null)
 	{
 		var labels = getFrameLabels(layer);
@@ -280,6 +298,7 @@ class FlxSymbol implements IFlxDestroyable
 
 		return array;
 	}
+
 	/**
 	 * Gets a symbol element via the symbol's name or the instance's name inside a frame.
 	 * @param name this can be either the name of the symbol or the instance.
@@ -296,7 +315,8 @@ class FlxSymbol implements IFlxDestroyable
 		{
 			var keyframe = timeline.get(layer).get(frame);
 
-			if (keyframe == null) return null;
+			if (keyframe == null)
+				return null;
 
 			for (element in keyframe.getList())
 			{
@@ -315,7 +335,8 @@ class FlxSymbol implements IFlxDestroyable
 			{
 				var keyframe = layer.get(frame);
 
-				if (keyframe == null) continue;
+				if (keyframe == null)
+					continue;
 
 				for (element in keyframe.getList())
 				{
@@ -331,6 +352,7 @@ class FlxSymbol implements IFlxDestroyable
 		}
 		return null;
 	}
+
 	/**
 	 * Gets the element's position inside a frame.
 	 * @param element The element in question.
@@ -346,7 +368,8 @@ class FlxSymbol implements IFlxDestroyable
 		{
 			var keyframe = layer.get(frame);
 
-			if (keyframe == null) continue;
+			if (keyframe == null)
+				continue;
 
 			for (e in keyframe.getList())
 			{
@@ -358,6 +381,7 @@ class FlxSymbol implements IFlxDestroyable
 		}
 		return -1;
 	}
+
 	/**
 	 * Swaps an element with another one.
 	 * @param oldElement The element you wanna replace
@@ -379,6 +403,7 @@ class FlxSymbol implements IFlxDestroyable
 		var oldElement = getElement(index);
 		oldElement = newElement;
 	}
+
 	public function fireCallbacks(?frame:Int)
 	{
 		if (frame == null)
@@ -402,14 +427,17 @@ class FlxSymbol implements IFlxDestroyable
 	{
 		return timeline.totalFrames;
 	}
+
 	function get_layers()
 	{
 		return timeline.getListNames();
 	}
+
 	function get_curFrame()
 	{
 		return _curFrame;
 	}
+
 	function set_curFrame(value:Int)
 	{
 		return _curFrame = value;

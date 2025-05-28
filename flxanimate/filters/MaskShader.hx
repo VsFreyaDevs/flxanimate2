@@ -2,7 +2,6 @@ package flxanimate.filters;
 
 import flixel.system.FlxAssets.FlxShader;
 
-
 /**
  * I did not steal this code from somewhere, specially not IADenner.
  */
@@ -30,7 +29,6 @@ class MaskShader extends FlxShader
 		gl_FragColor = texture2D(bitmap, openfl_TextureCoordv) * maskAlpha;
 	}
 ')
-
 	public function new()
 	{
 		super();

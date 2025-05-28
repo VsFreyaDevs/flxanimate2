@@ -14,6 +14,7 @@ class FlxMatrix3D extends Matrix3D
 	{
 		super(v);
 	}
+
 	public function concat2D(m:Matrix)
 	{
 		var a = rawData[0];
@@ -37,9 +38,8 @@ class FlxMatrix3D extends Matrix3D
 	}
 
 	public function toString()
-	{
 		return rawData.toString();
-	}
+
 	public function toMatrix()
 	{
 		return new FlxMatrix(rawData[0], rawData[1], rawData[4], rawData[5], rawData[12], rawData[13]);
@@ -50,7 +50,8 @@ class FlxMatrix3D extends Matrix3D
 		return new FlxMatrix3D(new Vector([m.a, m.b, 0.0, m.c, m.d, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, m.tx, m.ty, 0.0, 0.0, 1.0]));
 	}
 
-	public override function clone() {
+	public override function clone()
+	{
 		return new FlxMatrix3D(rawData.copy());
 	}
 }

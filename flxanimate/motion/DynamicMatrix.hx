@@ -14,6 +14,7 @@ class DynamicMatrix
 	 * Specifies that a matrix is prepended for concatenation.
 	 */
 	public static var MATRIX_ORDER_PREPEND(default, null):Int = 0;
+
 	/**
 	 * Specifies that a matrix is appended for concatenation.
 	 */
@@ -32,9 +33,11 @@ class DynamicMatrix
 	{
 		create(width, height);
 	}
+
 	function create(width:Int, height:Int)
 	{
-		if (width <= 0 || height <= 0) return;
+		if (width <= 0 || height <= 0)
+			return;
 		m_width = width;
 		m_height = height;
 		m_matrix = new Vector(height, true);
@@ -54,17 +57,15 @@ class DynamicMatrix
 	 * @see #getHeight
 	 */
 	public function getWidth()
-	{
 		return m_width;
-	}
+
 	/**
 	 * Returns the number of rows in the current matrix.
 	 * @return The number of rows.
 	 */
 	public function getHeight()
-	{
 		return m_height;
-	}
+
 	public function getValue(row:Int, col:Int)
 	{
 		var value:Float = 0;
@@ -73,6 +74,7 @@ class DynamicMatrix
 
 		return value;
 	}
+
 	/**
 	 * Sets the value at a specified zero-based row and column in the current matrix.
 	 * @param row The row containing the value you want to set.
@@ -84,6 +86,7 @@ class DynamicMatrix
 		if (row >= 0 && row < m_height && col >= 0 && col <= m_width)
 			m_matrix[row][col] = value;
 	}
+
 	/**
 	 * Sets the current matrix to an identity matrix.
 	 * @see [openfl.geom.Matrix#identity](https://api.openfl.org/openfl/geom/Matrix.html#identity)
@@ -91,24 +94,18 @@ class DynamicMatrix
 	public function loadIdentity()
 	{
 		if (m_matrix != null)
-		{
 			for (i in 0...m_height)
-			{
 				for (j in 0...m_width)
-				{
 					m_matrix[i][j] = (i == j) ? 1 : 0;
-				}
-			}
-		}
 	}
+
 	/**
 	 * Sets all values in the current matrix to zero.
 	 */
 	public function loadZeros()
-	{
 		if (m_matrix != null)
 			multiplyNumber(0);
-	}
+
 	/**
 	 * Multiplies the current matrix with a specified matrix; and either
 	 * appends or prepends the specified matrix. Use the `DynamicMatrix.multiply()` method to
@@ -160,12 +157,9 @@ class DynamicMatrix
 		create(width, height);
 
 		for (i in 0...inHeight)
-		{
 			for (j in 0...m_width)
-			{
 				m_matrix[i][j] = result.getValue(i, j);
-			}
-		}
+
 		return true;
 	}
 
@@ -182,15 +176,12 @@ class DynamicMatrix
 			return false;
 
 		for (i in 0...m_height)
-		{
 			for (j in 0...m_width)
-			{
 				m_matrix[i][j] *= value;
-			}
-		}
 
 		return true;
 	}
+
 	/**
 	 * Adds the current matrix with a specified matrix. The
 	 * current matrix becomes the result of the addition (in other
@@ -212,12 +203,8 @@ class DynamicMatrix
 			return false;
 
 		for (i in 0...m_height)
-		{
 			for (j in 0...m_width)
-			{
 				m_matrix[i][j] += inMatrix.getValue(i, j);
-			}
-		}
 
 		return true;
 	}

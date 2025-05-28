@@ -46,7 +46,7 @@ import openfl.filters.BitmapFilter;
 	example, if you zoom in on a large movie clip with a filter applied, the
 	filter is turned off if the resulting image exceeds the maximum
 	dimensions.
-*/
+ */
 @:access(openfl.filters.GlowFilter)
 @:access(openfl.filters.DropShadowFilter)
 class GradientGlowFilter extends BitmapFilter
@@ -54,7 +54,6 @@ class GradientGlowFilter extends BitmapFilter
 	@:noCompletion private static var __colorRatioShader = new ColorRatioShader();
 	@:noCompletion private static var __fullCombineShader = new FullCombineShader();
 	@:noCompletion private static var __colorFadeBmp:BitmapData = new BitmapData(255, 1, 0);
-
 
 	/**
 		An array of alpha transparency values for the corresponding colors in the colors array.
@@ -203,7 +202,6 @@ class GradientGlowFilter extends BitmapFilter
 	 */
 	public var type(get, set):String;
 
-
 	@:noCompletion private var __alphas:Array<Float>;
 	@:noCompletion private var __angle:Float;
 	@:noCompletion private var __blurX:Float;
@@ -221,7 +219,6 @@ class GradientGlowFilter extends BitmapFilter
 	@:noCompletion private var __offsetY:Float;
 
 	@:noCompletion private var __colorFadeArr:ByteArray;
-
 
 	/**
 		Initializes the filter with the specified parameters.
@@ -269,9 +266,9 @@ class GradientGlowFilter extends BitmapFilter
 		@param knockout Specifies whether the object has a knockout effect. A knockout effect makes the object's fill transparent and reveals
 						the background color of the document. The value `true` specifies a knockout effect; the default is `false`
 						(no knockout effect).
-	*/
+	 */
 	public function new(distance:Float = 4, angle:Float = 45, colors:Array<Int> = null, alphas:Array<Float> = null, ratios:Array<Int> = null, blurX:Float = 4,
-		blurY:Float = 4, strength:Float = 1, quality:Int = 1, type:String = "inner", knockout:Bool = false)
+			blurY:Float = 4, strength:Float = 1, quality:Int = 1, type:String = "inner", knockout:Bool = false)
 	{
 		super();
 
@@ -310,7 +307,6 @@ class GradientGlowFilter extends BitmapFilter
 		return new GradientGlowFilter(__distance, __angle, __colors, __alphas, __ratios, __blurX, __blurY, __strength, __quality, __type, __knockout);
 	}
 
-
 	@:noCompletion private override function __initShader(renderer:DisplayObjectRenderer, pass:Int, sourceBitmapData:BitmapData):Shader
 	{
 		var blurPass = pass;
@@ -348,58 +344,57 @@ class GradientGlowFilter extends BitmapFilter
 		switch (type)
 		{
 			case "outer":
-			{
-				if (__knockout)
 				{
-					var shader = GlowFilter.__combineKnockoutShader;
+					if (__knockout)
+					{
+						var shader = GlowFilter.__combineKnockoutShader;
+						shader.sourceBitmap.input = sourceBitmapData;
+						shader.offset.value[0] = __offsetX;
+						shader.offset.value[1] = __offsetY;
+						return shader;
+					}
+					var shader = GlowFilter.__combineShader;
 					shader.sourceBitmap.input = sourceBitmapData;
 					shader.offset.value[0] = __offsetX;
 					shader.offset.value[1] = __offsetY;
 					return shader;
 				}
-				var shader = GlowFilter.__combineShader;
-				shader.sourceBitmap.input = sourceBitmapData;
-				shader.offset.value[0] = __offsetX;
-				shader.offset.value[1] = __offsetY;
-				return shader;
-			}
 			case "inner":
-			{
-				if (__knockout)
 				{
-					var shader = GlowFilter.__innerCombineKnockoutShader;
+					if (__knockout)
+					{
+						var shader = GlowFilter.__innerCombineKnockoutShader;
+						shader.sourceBitmap.input = sourceBitmapData;
+						shader.offset.value[0] = __offsetX;
+						shader.offset.value[1] = __offsetY;
+						return shader;
+					}
+					var shader = GlowFilter.__innerCombineShader;
 					shader.sourceBitmap.input = sourceBitmapData;
 					shader.offset.value[0] = __offsetX;
 					shader.offset.value[1] = __offsetY;
 					return shader;
 				}
-				var shader = GlowFilter.__innerCombineShader;
-				shader.sourceBitmap.input = sourceBitmapData;
-				shader.offset.value[0] = __offsetX;
-				shader.offset.value[1] = __offsetY;
-				return shader;
-			}
 			case "full":
-			{
-				if (__knockout)
 				{
-					var shader = DropShadowFilter.__hideShader;
+					if (__knockout)
+					{
+						var shader = DropShadowFilter.__hideShader;
+						shader.sourceBitmap.input = sourceBitmapData;
+						shader.offset.value[0] = __offsetX;
+						shader.offset.value[1] = __offsetY;
+						return shader;
+					}
+
+					var shader = __fullCombineShader;
 					shader.sourceBitmap.input = sourceBitmapData;
 					shader.offset.value[0] = __offsetX;
 					shader.offset.value[1] = __offsetY;
 					return shader;
 				}
-
-				var shader = __fullCombineShader;
-				shader.sourceBitmap.input = sourceBitmapData;
-				shader.offset.value[0] = __offsetX;
-				shader.offset.value[1] = __offsetY;
-				return shader;
-			}
 		}
 
 		return null;
-
 	}
 
 	@:noCompletion private function __updateSize():Void
@@ -423,14 +418,14 @@ class GradientGlowFilter extends BitmapFilter
 	@:noCompletion private function __setColorBitmap()
 	{
 		__colorFadeArr.clear();
-		if (__colors.length < 0) return;
+		if (__colors.length < 0)
+			return;
 
 		var _rat = 0;
 
 		for (i in 0...255)
 		{
 			var preRatio = __ratios[_rat];
-
 
 			var currentRatio = (__ratios.length - 1 < _rat + 1) ? 255 : __ratios[_rat + 1];
 
@@ -465,7 +460,9 @@ class GradientGlowFilter extends BitmapFilter
 			var progr = (i - preRatio) / (currentRatio - preRatio);
 			var q = 1 - progr;
 
-			__colorFadeArr.writeInt(Std.int(preA * q + postA * progr) << 24 | Std.int(preR * q + postR * progr) << 16 | Std.int(preG * q + postG * progr) << 8 | Std.int(preB * q + postB * progr));
+			__colorFadeArr.writeInt(Std.int(preA * q + postA * progr) << 24 | Std.int(preR * q + postR * progr) << 16 | Std.int(preG * q +
+				postG * progr) << 8 | Std.int(preB * q
+				+ postB * progr));
 		}
 
 		__colorFadeArr.position = 0;
@@ -574,7 +571,8 @@ class GradientGlowFilter extends BitmapFilter
 
 	@:noCompletion private function set_knockout(value:Bool):Bool
 	{
-		if (value != __knockout) __renderDirty = true;
+		if (value != __knockout)
+			__renderDirty = true;
 		return __knockout = value;
 	}
 
@@ -585,7 +583,8 @@ class GradientGlowFilter extends BitmapFilter
 
 	@:noCompletion private function set_quality(value:Int):Int
 	{
-		if (value != __quality) __renderDirty = true;
+		if (value != __quality)
+			__renderDirty = true;
 		return __quality = value;
 	}
 
@@ -612,7 +611,8 @@ class GradientGlowFilter extends BitmapFilter
 
 	@:noCompletion private function set_strength(value:Float):Float
 	{
-		if (value != __strength) __renderDirty = true;
+		if (value != __strength)
+			__renderDirty = true;
 		return __strength = value;
 	}
 
@@ -631,8 +631,8 @@ class GradientGlowFilter extends BitmapFilter
 		}
 		return value;
 	}
-
 }
+
 #if !openfl_debug
 @:fileXml('tags="haxe,release"')
 @:noDebug

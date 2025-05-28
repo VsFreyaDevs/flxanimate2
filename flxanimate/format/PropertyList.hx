@@ -1,10 +1,10 @@
 package flxanimate.format;
+
 #if haxe4
 import haxe.xml.Access;
 #else
 import haxe.xml.Fast as Access;
 #end
-
 
 /**
  * The Apple's propietary XML parser
@@ -29,14 +29,12 @@ class PropertyList
 	static function parseDate(text:String):Date
 	{
 		if (!_dateRegex.match(text))
-		{
 			throw 'Invalid date "' + text + '" (only yyyy-mm-dd and yyyy-mm-ddThh:mm:ssZ supported)';
-		}
+
 		text = _dateRegex.matched(1);
 		if (_dateRegex.matched(2) != null)
-		{
 			text += ' ' + _dateRegex.matched(2);
-		}
+
 		return Date.fromString(text);
 	}
 
@@ -47,13 +45,9 @@ class PropertyList
 		for (childNode in node.elements)
 		{
 			if (childNode.name == 'key')
-			{
 				key = childNode.innerData;
-			}
 			else if (key != null)
-			{
 				Reflect.setField(result, key, parseValue(childNode));
-			}
 		}
 		return result;
 	}
@@ -66,9 +60,7 @@ class PropertyList
 			case 'array':
 				value = new Array<Dynamic>();
 				for (childNode in node.elements)
-				{
 					value.push(parseValue(childNode));
-				}
 
 			case 'dict':
 				value = parseDict(node);

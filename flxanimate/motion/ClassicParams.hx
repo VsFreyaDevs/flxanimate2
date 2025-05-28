@@ -1,5 +1,5 @@
 package flxanimate.motion;
 
-class ClassicParams {
-
+class ClassicParams
+{
 }

@@ -12,6 +12,7 @@ class Zip
 {
 	var i:haxe.io.Input;
 	var reader:Reader;
+
 	public function new(i)
 	{
 		this.i = i;
@@ -20,31 +21,28 @@ class Zip
 
 	function readZipDate()
 	{
-	   @:privateAccess
-	   return reader.readZipDate();
+		@:privateAccess
+		return reader.readZipDate();
 	}
 
 	function readExtraFields(length)
 	{
-	   @:privateAccess
-	   return reader.readExtraFields(length);
+		@:privateAccess
+		return reader.readExtraFields(length);
 	}
 
 	public function readEntryHeader():Entry
-	{
-	   return reader.readEntryHeader();
-	}
+		return reader.readEntryHeader();
 
 	public function read():List<Entry>
-	{
-	   return reader.read();
-	}
+		return reader.read();
 
 	public static function readZip(i:haxe.io.Bytes)
 	{
 		var r = new Reader(new BytesInput(i));
 		return r.read();
 	}
+
 	public static function unzip(f:List<Entry>):List<Entry>
 	{
 		for (list in f)
@@ -60,7 +58,7 @@ class Zip
 					throw "Invalid compressed data for " + list.fileName;
 				list.data = s;
 				#else
-					list.data = Deflate.decompress(list.data);
+				list.data = Deflate.decompress(list.data);
 				#end
 				list.compressed = false;
 				list.dataSize = list.fileSize;

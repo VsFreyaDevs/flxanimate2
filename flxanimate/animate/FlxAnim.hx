@@ -460,7 +460,7 @@ class FlxAnim implements IFlxDestroyable
 	}
 
 	public function get_length():Int
-		return curSymbol.length;
+		return (curSymbol != null) ? curSymbol.length : 0;
 
 	public function getFrameLabel(name:String, ?layer:EitherType<Int, String>):FlxKeyFrame
 		return curSymbol.getFrameLabel(name, layer);

@@ -1,4 +1,5 @@
 package flxanimate.motion;
+
 /**
  * The ColorMatrix class calculates and stores color matrixes based on given values.
  * This class extends the DynamicMatrix class and also supports the ColorMatrixFilter class.
@@ -20,25 +21,29 @@ class ColorMatrix extends DynamicMatrix
 		super(5, 5);
 		loadIdentity();
 	}
+
 	/**
 	 * Calculates and stores a brightness matrix based on the given value.
 	 * @param value 0-255
 	 */
 	public function setBrightnessMatrix(value:Float)
 	{
-		if (m_matrix == null) return;
+		if (m_matrix == null)
+			return;
 
 		m_matrix[0][4] = value;
 		m_matrix[1][4] = value;
 		m_matrix[2][4] = value;
 	}
+
 	/**
 	 * Calculates and stores a contrast matrix based on the given value.
 	 * @param value 0 - 255
 	 */
 	public function setContrastMatrix(value:Float)
 	{
-		if (m_matrix == null) return;
+		if (m_matrix == null)
+			return;
 
 		var brightness = 0.5 * (127.0 - value);
 		value /= 127;
@@ -49,13 +54,15 @@ class ColorMatrix extends DynamicMatrix
 
 		setBrightnessMatrix(brightness);
 	}
+
 	/**
 	 * Calculates and stores a saturation matrix based on the given value.
 	 * @param value 0-255
 	 */
 	public function setSaturationMatrix(value:Float)
 	{
-		if (m_matrix == null) return;
+		if (m_matrix == null)
+			return;
 
 		var subVal = 1.0 - value;
 
@@ -74,6 +81,7 @@ class ColorMatrix extends DynamicMatrix
 		m_matrix[1][2] = mulVal;
 		m_matrix[2][2] = mulVal + value;
 	}
+
 	// SVG implementation of Hue Rotation
 	// See https://www.w3.org/TR/filter-effects/#feColorMatrixElement
 
@@ -96,15 +104,15 @@ class ColorMatrix extends DynamicMatrix
 
 		The name and trademarks of copyright holders may NOT be used in advertising or publicity pertaining to the work without specific, written prior permission. Title to copyright in this work will at all times remain with copyright holders.
 
-	*/
-
+	 */
 	/**
 	 * Calculates and stores a hue matrix based on the given value.
 	 * @param value 0-255
 	 */
 	public function setHueMatrix(angle:Float)
 	{
-		if (m_matrix == null) return;
+		if (m_matrix == null)
+			return;
 
 		loadIdentity();
 
@@ -163,12 +171,8 @@ class ColorMatrix extends DynamicMatrix
 		baseMat.add(sinBaseMat);
 
 		for (i in 0...3)
-		{
 			for (j in 0...3)
-			{
 				m_matrix[i][j] = baseMat.getValue(i, j);
-			}
-		}
 	}
 
 	/**
@@ -177,7 +181,8 @@ class ColorMatrix extends DynamicMatrix
 	 */
 	public function getFlatArray()
 	{
-		if (m_matrix == null) return null;
+		if (m_matrix == null)
+			return null;
 
 		var index = 0;
 		var ptr = [];

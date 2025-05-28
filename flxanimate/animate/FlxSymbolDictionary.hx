@@ -19,50 +19,37 @@ class FlxSymbolDictionary
 		_symbols = [];
 	}
 
-
 	public function getLibrary(library:String)
 	{
 		var path = Path.directory(Path.addTrailingSlash(library));
 
 		var libraries:Map<String, FlxSymbol> = [];
 		for (instance in _symbols.keys())
-		{
 			if (path == instance)
 				libraries.set(path, _symbols.get(path));
-		}
 
 		return libraries;
 	}
 
-	public function existsSymbol(symbol:String)
-	{
+	public function existsSymbol(symbol:String):Bool
 		return _symbols.exists(symbol);
-	}
 
-	public function getSymbol(symbol:String)
-	{
+	public function getSymbol(symbol:String):Null<FlxSymbol>
 		return _symbols.get(symbol);
-	}
 
 	public function addSymbol(symbol:FlxSymbol, ?overrideSymbol:Bool = false)
 	{
 		if (_symbols.exists(symbol.name) && !overrideSymbol)
-		{
 			symbol.name += " Copy";
-		}
 
-			_symbols.set(symbol.name, symbol);
+		_symbols.set(symbol.name, symbol);
 
 		length++;
 	}
 
 	public function addLibrary(library:Map<String, FlxSymbol>, ?overrideSymbol:Bool = false)
-	{
 		for (symbol in library)
-		{
 			addSymbol(symbol, overrideSymbol);
-		}
-	}
 
 	public function removeLibrary(library:String)
 	{
@@ -71,13 +58,12 @@ class FlxSymbolDictionary
 		var library = getLibrary(library);
 
 		for (symbol in library)
-		{
 			if (removeSymbol(symbol))
 				bool = true;
-		}
 
 		return bool;
 	}
+
 	public function removeSymbol(symbol:EitherType<FlxSymbol, String>)
 	{
 		var bool:Bool = false;

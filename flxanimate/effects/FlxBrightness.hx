@@ -8,12 +8,12 @@ class FlxBrightness extends FlxColorEffect
 	{
 		this.brightness = brightness;
 
-
 		super();
 	}
+
 	override function process()
 	{
-		c_Transform.redMultiplier = c_Transform.greenMultiplier = c_Transform.blueMultiplier =  1 - Math.abs(brightness);
+		c_Transform.redMultiplier = c_Transform.greenMultiplier = c_Transform.blueMultiplier = 1 - Math.abs(brightness);
 
 		if (brightness >= 0)
 			c_Transform.redOffset = c_Transform.greenOffset = c_Transform.blueOffset = 255 * brightness;
@@ -21,7 +21,12 @@ class FlxBrightness extends FlxColorEffect
 
 	function set_brightness(value:Float)
 	{
-		if (brightness != value) renderDirty = true;
+		if (brightness != value)
+			renderDirty = true;
+		if (value < -1)
+			value = -1;
+		if (value > 1)
+			value = 1;
 
 		return brightness = value;
 	}

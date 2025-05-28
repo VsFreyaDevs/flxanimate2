@@ -51,7 +51,7 @@ import openfl.display.BitmapData;
 	example, you zoom in on a large movie clip with a filter applied, the
 	filter is turned off if the resulting image exceeds the maximum
 	dimensions.
-*/
+ */
 #if !openfl_debug
 @:fileXml('tags="haxe,release"')
 @:noDebug
@@ -284,7 +284,8 @@ class BevelFilter extends BitmapFilter
 		@see `BitmapFilterQuality`
 		@see `BitmapFilterType`
 	 */
-	public function new(distance:Float = 4, angle:Float = 45, highlightColor:Int = 0xFFFFFF, highlightAlpha:Float = 1, shadowColor:Int = 0x000000, shadowAlpha:Float = 1, blurX:Float = 4, blurY:Float = 4, strength:Float = 1, quality:Int = 1, type:String = "inner", knockout:Bool = false)
+	public function new(distance:Float = 4, angle:Float = 45, highlightColor:Int = 0xFFFFFF, highlightAlpha:Float = 1, shadowColor:Int = 0x000000,
+			shadowAlpha:Float = 1, blurX:Float = 4, blurY:Float = 4, strength:Float = 1, quality:Int = 1, type:String = "inner", knockout:Bool = false)
 	{
 		super();
 
@@ -310,12 +311,14 @@ class BevelFilter extends BitmapFilter
 		__preserveObject = true;
 		__renderDirty = true;
 	}
+
 	public override function clone():BitmapFilter
 	{
-		return new BevelFilter(__distance, __angle, __highlightColor, __highlightAlpha, __shadowColor, __shadowAlpha, __blurX, __blurY, __strength, __quality, __type, __knockout);
+		return new BevelFilter(__distance, __angle, __highlightColor, __highlightAlpha, __shadowColor, __shadowAlpha, __blurX, __blurY, __strength, __quality,
+			__type, __knockout);
 	}
-	// TODO: Implement __applyFilter
 
+	// TODO: Implement __applyFilter
 
 	@:noCompletion private override function __initShader(renderer:DisplayObjectRenderer, pass:Int, sourceBitmapData:BitmapData):Shader
 	{
@@ -341,7 +344,7 @@ class BevelFilter extends BitmapFilter
 			return shader;
 		}
 
-		var shader:BevelShader = switch(BitmapFilterType.fromString(__type))
+		var shader:BevelShader = switch (BitmapFilterType.fromString(__type))
 		{
 			case BitmapFilterType.INNER: __innerCombineShader;
 			case BitmapFilterType.OUTER: __combineShader;
@@ -373,12 +376,13 @@ class BevelFilter extends BitmapFilter
 		return null;
 		#end
 	}
+
 	@:noCompletion private function __updateSize():Void
 	{
 		__offsetX = Std.int(__distance * Math.cos(__angle * Math.PI / 180));
 		__offsetY = Std.int(__distance * Math.sin(__angle * Math.PI / 180));
 		__topExtension = (type != BitmapFilterType.INNER) ? Math.ceil(Math.abs(__offsetY) + __blurY) : 0;
-		__bottomExtension =  __topExtension;
+		__bottomExtension = __topExtension;
 		__leftExtension = (type != BitmapFilterType.INNER) ? Math.ceil(Math.abs(__offsetX) + __blurX) : 0;
 		__rightExtension = __leftExtension;
 		__calculateNumShaderPasses();
@@ -462,7 +466,8 @@ class BevelFilter extends BitmapFilter
 
 	@:noCompletion private function set_highlightAlpha(value:Float):Float
 	{
-		if (value != __highlightAlpha) __renderDirty = true;
+		if (value != __highlightAlpha)
+			__renderDirty = true;
 		return __highlightAlpha = value;
 	}
 
@@ -473,7 +478,8 @@ class BevelFilter extends BitmapFilter
 
 	@:noCompletion private function set_highlightColor(value:Int):Int
 	{
-		if (value != __highlightColor) __renderDirty = true;
+		if (value != __highlightColor)
+			__renderDirty = true;
 		return __highlightColor = value;
 	}
 
@@ -484,7 +490,8 @@ class BevelFilter extends BitmapFilter
 
 	@:noCompletion private function set_knockout(value:Bool):Bool
 	{
-		if (value != __knockout) __renderDirty = true;
+		if (value != __knockout)
+			__renderDirty = true;
 		return __knockout = value;
 	}
 
@@ -495,7 +502,8 @@ class BevelFilter extends BitmapFilter
 
 	@:noCompletion private function set_quality(value:Int):Int
 	{
-		if (value != __quality) __renderDirty = true;
+		if (value != __quality)
+			__renderDirty = true;
 		return __quality = value;
 	}
 
@@ -506,7 +514,8 @@ class BevelFilter extends BitmapFilter
 
 	@:noCompletion private function set_shadowAlpha(value:Float):Float
 	{
-		if (value != __shadowAlpha) __renderDirty = true;
+		if (value != __shadowAlpha)
+			__renderDirty = true;
 		return __shadowAlpha = value;
 	}
 
@@ -517,7 +526,8 @@ class BevelFilter extends BitmapFilter
 
 	@:noCompletion private function set_shadowColor(value:Int):Int
 	{
-		if (value != __shadowColor) __renderDirty = true;
+		if (value != __shadowColor)
+			__renderDirty = true;
 		return __shadowColor = value;
 	}
 
@@ -528,7 +538,8 @@ class BevelFilter extends BitmapFilter
 
 	@:noCompletion private function set_strength(value:Float):Float
 	{
-		if (value != __strength) __renderDirty = true;
+		if (value != __strength)
+			__renderDirty = true;
 		return __strength = value;
 	}
 
@@ -585,7 +596,6 @@ private class BevelShader extends BitmapFilterShader
 		uniform vec2 offset;
 		varying vec4 textureCoords;
 	")
-
 	@:glVertexBody("textureCoords = vec4(openfl_TextureCoord - offset / openfl_TextureSize, openfl_TextureCoord + offset / openfl_TextureSize);")
 	public function new()
 	{
@@ -625,6 +635,7 @@ private class FullCombineShader extends BevelShader
 		super();
 	}
 }
+
 #if !openfl_debug
 @:fileXml('tags="haxe,release"')
 @:noDebug
@@ -674,6 +685,5 @@ private class CombineShader extends BevelShader
 		super();
 	}
 }
-
 
 // cheemsnfriends was here lmao

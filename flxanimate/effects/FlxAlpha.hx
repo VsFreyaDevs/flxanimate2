@@ -12,12 +12,12 @@ class FlxAlpha extends FlxColorEffect
 	}
 
 	override function process()
-	{
 		c_Transform.alphaMultiplier = alpha;
-	}
+
 	function set_alpha(value:Float)
 	{
-		if (alpha != value) renderDirty = true;
+		if (alpha != value)
+			renderDirty = true;
 
 		return alpha = value;
 	}
